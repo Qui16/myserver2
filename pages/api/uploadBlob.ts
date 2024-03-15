@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import multer from 'multer';
 import { BlobServiceClient } from '@azure/storage-blob';
 import stream from 'stream';
+import uploadBlob from '../../uploadBlob';
 
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -16,17 +17,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const buffer = Buffer.concat(chunks);
 
         try {
-            const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);
-            const containerName = 'audiofiles';
-            const containerClient = blobServiceClient.getContainerClient(containerName);
-            const blobName = 'user_audio_test.wav';
-            const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-
             const readableStream = new stream.PassThrough();
             readableStream.end(buffer);
-
-            await blockBlobClient.uploadStream(readableStream);
-
+            await uploadBlob(readableStream);
             res.status(200).send('File uploaded to Azure Blob Storage.');
         } catch (err: any) {
             console.error(`Error: ${err.message}`);
