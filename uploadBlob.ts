@@ -1,4 +1,4 @@
-import { BlobServiceClient } from '@azure/storage-blob';
+const { BlobServiceClient } = require("@azure/storage-blob");
 import { Readable } from 'stream';
 require('dotenv').config();
 
