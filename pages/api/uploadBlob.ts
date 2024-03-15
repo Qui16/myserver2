@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import multer from 'multer';
-import { BlobServiceClient } from '@azure/storage-blob';
 import stream from 'stream';
 import uploadBlob from '../../uploadBlob';
 
