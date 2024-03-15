@@ -13,8 +13,14 @@ const uploadBlob = async (readableStream: Readable) => {
     const containerClient = blobServiceClient.getContainerClient(containerName);
     const blobName = 'user_audio_test.wav';
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+    try {
+        await blockBlobClient.uploadStream(readableStream);
 
-    await blockBlobClient.uploadStream(readableStream);
+    } catch (err: any) {
+        console.error(`Error: ${err.message}`);
+        throw new Error(err.message);
+    }
+
 
 }
 export default uploadBlob;
